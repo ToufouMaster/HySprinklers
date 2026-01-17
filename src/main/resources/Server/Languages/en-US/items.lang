@@ -1,0 +1,14 @@
+Copper_Sprinkler.name = Copper Sprinkler
+Copper_Sprinkler.description = Automatically water your crops in a plus shape
+Iron_Sprinkler.name = Iron Sprinkler
+Iron_Sprinkler.description = Automatically water your crops in a 3x3 area
+Thorium_Sprinkler.name = Thorium Sprinkler
+Thorium_Sprinkler.description = Automatically water your crops in a 5x5 area
+Cobalt_Sprinkler.name = Cobalt Sprinkler
+Cobalt_Sprinkler.description = Automatically water your crops in a 7x7 area
+Adamantite_Sprinkler.name = Adamantite Sprinkler
+Adamantite_Sprinkler.description = Automatically water your crops in a 9x9 area
+Mithril_Sprinkler.name = Mithril Sprinkler
+Mithril_Sprinkler.description = Automatically water your crops in a 11x11 area
+Onyxium_Sprinkler.name = Onyxium Sprinkler
+Onyxium_Sprinkler.description = Automatically water your crops in a 13x13 area

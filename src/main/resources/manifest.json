@@ -1,0 +1,7 @@
+{
+  "Group": "fr.toufoumaster",
+  "Name": "HySprinklers",
+  "Version": "1.0.0",
+  "Main": "fr.toufoumaster.hytalevr.HySprinklers",
+  "IncludesAssetPack": true
+}

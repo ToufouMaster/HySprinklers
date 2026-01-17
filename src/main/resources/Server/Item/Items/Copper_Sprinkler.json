@@ -1,0 +1,124 @@
+{
+  "TranslationProperties": {
+    "Name": "items.Copper_Sprinkler.name",
+    "Description": "items.Copper_Sprinkler.description"
+  },
+  "Quality": "Common",
+  "MaxStack": 5,
+  "Icon": "Icons/ItemsGenerated/Copper_Sprinkler.png",
+  "Categories": [
+    "Furniture.Benches"
+  ],
+  "PlayerAnimationsId": "Block",
+  "BlockType": {
+    "Material": "Solid",
+    "CustomModel": "Blocks/Sprinklers/Sprinkler.blockymodel",
+    "CustomModelTexture": [
+      {
+        "Texture": "BlockTextures/Sprinklers/Copper_Sprinkler.png",
+        "Weight": 1
+      }
+    ],
+    "HitboxType": "Sprinkler",
+    "Support": {
+      "Down": [
+        {
+          "FluidId": "Water_Source"
+        }
+      ]
+    },
+    "Particles": [
+      {
+        "SystemId": "Copper_Sprinkler_Particle",
+        "Scale": 1
+      }
+    ],
+    "InteractionHint": "server.interactionHints.turnoff",
+    "Interactions": {
+      "Use": {
+        "Interactions": [
+          {
+            "Type": "ChangeState",
+            "Changes": {
+              "default": "Off",
+              "Off": "default"
+            }
+          }
+        ]
+      }
+    },
+    "State": {
+      "Id": "Copper_Sprinkler",
+      "Definitions": {
+        "On": {
+          "AmbientSoundEventId": null
+        },
+        "Off": {
+          "InteractionHint": "server.interactionHints.turnon",
+          "AmbientSoundEventId": null,
+          "CustomModelAnimation": null,
+          "Particles": null
+        }
+      }
+    },
+    "DrawType": "Model",
+    "Group": "@Tech",
+    "Flags": {},
+    "Gathering": {
+      "Breaking": {
+        "GatherType": "Rocks"
+      }
+    },
+    "BlockParticleSetId": "Metal",
+    "ParticleColor": "#f08638",
+    "BlockSoundSetId": "Metal",
+    "BlockBreakingDecalId": "Breaking_Decals_Rock",
+    "CustomModelAnimation": "Blocks/Sprinklers/spin.blockyanim",
+    "Looping": true,
+    "AmbientSoundEventId": "SFX_Sprinkler_Ambiant",
+    "InteractionSoundEventId": "SFX_Valve"
+  },
+  "Recipe": {
+    "Input": [
+      {
+        "ItemId": "Ingredient_Bar_Copper",
+        "Quantity": 4
+      },
+      {
+        "Quantity": 4,
+        "ResourceTypeId": "Rock"
+      },
+      {
+        "ItemId": "Ingredient_Fabric_Scrap_Linen",
+        "Quantity": 2
+      }
+    ],
+    "BenchRequirement": [
+      {
+        "Type": "Crafting",
+        "Id": "Farmingbench",
+        "Categories": [
+          "Farming"
+        ],
+        "RequiredTierLevel": 1
+      }
+    ],
+    "TimeSeconds": 1,
+    "OutputQuantity": 1
+  },
+  "IconProperties": {
+    "Scale": 1.6,
+    "Rotation": [
+      22.5,
+      45,
+      22.5
+    ],
+    "Translation": [
+      0,
+      -10
+    ]
+  },
+  "Consumable": false,
+  "ClipsGeometry": false,
+  "UsePlayerAnimations": false
+}

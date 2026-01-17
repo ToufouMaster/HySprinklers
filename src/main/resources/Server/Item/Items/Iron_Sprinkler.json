@@ -1,0 +1,125 @@
+{
+  "TranslationProperties": {
+    "Name": "items.Iron_Sprinkler.name",
+    "Description": "items.Iron_Sprinkler.description"
+  },
+  "Quality": "Uncommon",
+  "MaxStack": 5,
+  "Icon": "Icons/ItemsGenerated/Iron_Sprinkler.png",
+  "Categories": [
+    "Furniture.Benches"
+  ],
+  "PlayerAnimationsId": "Block",
+  "BlockType": {
+    "Material": "Solid",
+    "CustomModel": "Blocks/Sprinklers/Sprinkler.blockymodel",
+    "CustomModelTexture": [
+      {
+        "Texture": "BlockTextures/Sprinklers/Iron_Sprinkler.png",
+        "Weight": 1
+      }
+    ],
+    "HitboxType": "Sprinkler",
+    "Support": {
+      "Down": [
+        {
+          "FluidId": "Water_Source"
+        }
+      ]
+    },
+    "CustomModelAnimation": "Blocks/Sprinklers/spin.blockyanim",
+    "Particles": [
+      {
+        "SystemId": "Iron_Sprinkler_Particle",
+        "Scale": 1
+      }
+    ],
+    "InteractionHint": "server.interactionHints.turnoff",
+    "Interactions": {
+      "Use": {
+        "Interactions": [
+          {
+            "Type": "ChangeState",
+            "Changes": {
+              "default": "Off",
+              "Off": "default"
+            }
+          }
+        ]
+      }
+    },
+    "State": {
+      "Id": "Iron_Sprinkler",
+      "Definitions": {
+        "On": {
+          "AmbientSoundEventId": null
+        },
+        "Off": {
+          "InteractionHint": "server.interactionHints.turnon",
+          "AmbientSoundEventId": null,
+          "CustomModelAnimation": null,
+          "Particles": null
+        }
+      }
+    },
+    "DrawType": "Model",
+    "Group": "@Tech",
+    "Flags": {},
+    "Gathering": {
+      "Breaking": {
+        "GatherType": "Rocks"
+      }
+    },
+    "BlockParticleSetId": "Metal",
+    "ParticleColor": "#9e9e9e",
+    "BlockSoundSetId": "Metal",
+    "BlockBreakingDecalId": "Breaking_Decals_Rock",
+    "Looping": true,
+    "AmbientSoundEventId": "SFX_Sprinkler_Ambiant",
+    "InteractionSoundEventId": "SFX_Valve"
+  },
+  "Recipe": {
+    "Input": [
+      {
+        "ItemId": "Ingredient_Bar_Iron",
+        "Quantity": 5
+      },
+      {
+        "Quantity": 4,
+        "ResourceTypeId": "Rock"
+      },
+      {
+        "ItemId": "Ingredient_Fabric_Scrap_Linen",
+        "Quantity": 2
+      }
+    ],
+    "BenchRequirement": [
+      {
+        "Type": "Crafting",
+        "Id": "Farmingbench",
+        "Categories": [
+          "Farming"
+        ],
+        "RequiredTierLevel": 2
+      }
+    ],
+    "TimeSeconds": 1,
+    "OutputQuantity": 1
+  },
+  "IconProperties": {
+    "Scale": 1.6,
+    "Rotation": [
+      22.5,
+      45,
+      22.5
+    ],
+    "Translation": [
+      0,
+      -10
+    ]
+  },
+  "Consumable": false,
+  "ClipsGeometry": false,
+  "UsePlayerAnimations": false,
+  "Animation": null
+}

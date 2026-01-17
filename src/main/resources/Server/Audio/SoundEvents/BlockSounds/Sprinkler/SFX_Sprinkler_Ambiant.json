@@ -1,0 +1,18 @@
+{
+  "Layers": [
+    {
+      "Files": [
+        "Sounds/Sprinkler_Water.ogg"
+      ],
+      "Volume": 1.0,
+      "RandomSettings": {
+        "MinPitch": 0,
+        "MaxPitch": 0,
+        "MinVolume": 0
+      },
+      "Looping": true
+    }
+  ],
+  "Volume": 1,
+  "Parent": "SFX_Attn_Quiet"
+}

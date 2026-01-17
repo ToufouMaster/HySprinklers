@@ -1,0 +1,132 @@
+{
+  "TranslationProperties": {
+    "Name": "items.Onyxium_Sprinkler.name",
+    "Description": "items.Onyxium_Sprinkler.description"
+  },
+  "Quality": "Epic",
+  "MaxStack": 5,
+  "Icon": "Icons/ItemsGenerated/Onyxium_Sprinkler.png",
+  "Categories": [
+    "Furniture.Benches"
+  ],
+  "PlayerAnimationsId": "Block",
+  "BlockType": {
+    "Material": "Solid",
+    "CustomModel": "Blocks/Sprinklers/Sprinkler.blockymodel",
+    "CustomModelTexture": [
+      {
+        "Texture": "BlockTextures/Sprinklers/Onyxium_Sprinkler.png",
+        "Weight": 1
+      }
+    ],
+    "HitboxType": "Sprinkler",
+    "Support": {
+      "Down": [
+        {
+          "FluidId": "Water_Source"
+        }
+      ]
+    },
+    "Particles": [
+      {
+        "SystemId": "Onyxium_Sprinkler_Particle",
+        "Scale": 1
+      }
+    ],
+    "InteractionHint": "server.interactionHints.turnoff",
+    "Interactions": {
+      "Use": {
+        "Interactions": [
+          {
+            "Type": "ChangeState",
+            "Changes": {
+              "default": "Off",
+              "Off": "default"
+            }
+          }
+        ]
+      }
+    },
+    "State": {
+      "Id": "Onyxium_Sprinkler",
+      "Definitions": {
+        "On": {
+          "AmbientSoundEventId": null
+        },
+        "Off": {
+          "InteractionHint": "server.interactionHints.turnon",
+          "AmbientSoundEventId": null,
+          "CustomModelAnimation": null,
+          "Particles": null
+        }
+      }
+    },
+    "DrawType": "Model",
+    "Group": "@Tech",
+    "Flags": {},
+    "Gathering": {
+      "Breaking": {
+        "GatherType": "Rocks"
+      }
+    },
+    "BlockParticleSetId": "Metal",
+    "ParticleColor": "#3e1a4e",
+    "BlockSoundSetId": "Metal",
+    "BlockBreakingDecalId": "Breaking_Decals_Rock",
+    "CustomModelAnimation": "Blocks/Sprinklers/spin.blockyanim",
+    "Looping": true,
+    "AmbientSoundEventId": "SFX_Sprinkler_Ambiant",
+    "InteractionSoundEventId": "SFX_Valve"
+  },
+  "Recipe": {
+    "Input": [
+      {
+        "ItemId": "Ingredient_Bar_Onyxium",
+        "Quantity": 7
+      },
+      {
+        "Quantity": 4,
+        "ResourceTypeId": "Rock"
+      },
+      {
+        "ItemId": "Ingredient_Fabric_Scrap_Linen",
+        "Quantity": 4
+      },
+      {
+        "ItemId": "Ingredient_Fabric_Scrap_Cindercloth",
+        "Quantity": 3
+      },
+      {
+        "ItemId": "Ingredient_Fire_Essence",
+        "Quantity": 3
+      }
+    ],
+    "BenchRequirement": [
+      {
+        "Type": "Crafting",
+        "Id": "Farmingbench",
+        "Categories": [
+          "Farming"
+        ],
+        "RequiredTierLevel": 7
+      }
+    ],
+    "TimeSeconds": 1,
+    "OutputQuantity": 1
+  },
+  "IconProperties": {
+    "Scale": 1.6,
+    "Rotation": [
+      22.5,
+      45,
+      22.5
+    ],
+    "Translation": [
+      0,
+      -10
+    ]
+  },
+  "Consumable": false,
+  "ClipsGeometry": false,
+  "UsePlayerAnimations": false
+}
