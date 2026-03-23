@@ -76,7 +76,14 @@
     "CustomModelAnimation": "Blocks/Sprinklers/spin.blockyanim",
     "Looping": true,
     "AmbientSoundEventId": "SFX_Sprinkler_Ambiant",
-    "InteractionSoundEventId": "SFX_Valve"
+    "InteractionSoundEventId": "SFX_Valve",
+    "BlockEntity": {
+      "Components": {
+        "SprinklerBlock": {
+          "Tier": 4
+        }
+      }
+    }
   },
   "Recipe": {
     "Input": [

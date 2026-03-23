@@ -76,7 +76,14 @@
     "BlockBreakingDecalId": "Breaking_Decals_Rock",
     "Looping": true,
     "AmbientSoundEventId": "SFX_Sprinkler_Ambiant",
-    "InteractionSoundEventId": "SFX_Valve"
+    "InteractionSoundEventId": "SFX_Valve",
+    "BlockEntity": {
+      "Components": {
+        "SprinklerBlock": {
+          "Tier": 1
+        }
+      }
+    }
   },
   "Recipe": {
     "Input": [

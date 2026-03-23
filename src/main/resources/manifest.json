@@ -1,13 +1,17 @@
 {
   "Group": "Toufoumaster",
   "Name": "HySprinklers",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Add sprinklers to automatically water your crops",
   "Authors": [
     {
       "Name": "ToufouMaster"
     }
   ],
+  "Dependencies": {
+    "Hytale:EntityModule": "*",
+    "Hytale:BlockModule": "*"
+  },
   "Main": "fr.toufoumaster.hytalevr.HySprinklers",
   "IncludesAssetPack": true
 }

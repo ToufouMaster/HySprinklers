@@ -1,65 +1,57 @@
 package fr.toufoumaster.hytalevr.Blocks;
 
 import com.hypixel.hytale.builtin.adventure.farming.states.TilledSoilBlock;
-import com.hypixel.hytale.codec.Codec;
-import com.hypixel.hytale.codec.KeyedCodec;
-import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.component.ArchetypeChunk;
 import com.hypixel.hytale.component.CommandBuffer;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
+import com.hypixel.hytale.component.query.Query;
+import com.hypixel.hytale.component.system.tick.EntityTickingSystem;
 import com.hypixel.hytale.math.util.ChunkUtil;
 import com.hypixel.hytale.math.vector.Vector3i;
-import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
+import com.hypixel.hytale.server.core.modules.block.BlockModule;
 import com.hypixel.hytale.server.core.modules.time.WorldTimeResource;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.chunk.BlockChunk;
 import com.hypixel.hytale.server.core.universe.world.chunk.WorldChunk;
 import com.hypixel.hytale.server.core.universe.world.chunk.section.BlockSection;
-import com.hypixel.hytale.server.core.universe.world.chunk.state.TickableBlockState;
-import com.hypixel.hytale.server.core.universe.world.meta.BlockState;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
-public class SprinklerBlockState extends BlockState implements TickableBlockState {
+public class SprinklerSystem extends EntityTickingSystem<ChunkStore> {
+    float seconds = 0;
 
-    private int tick = 0;
+    public void tick(float dt, int index, @Nonnull ArchetypeChunk archetypeChunk, @Nonnull Store store, @Nonnull CommandBuffer commandBuffer) {
+        seconds += dt;
+        if (seconds < 3) return;
+        seconds -= 3;
+        SprinklerBlock block = (SprinklerBlock) archetypeChunk.getComponent(index, SprinklerBlock.getComponentType());
+        assert block != null;
 
-    public static final Codec<SprinklerBlockState> CODEC = BuilderCodec.builder(SprinklerBlockState.class, SprinklerBlockState::new).append(
-            new KeyedCodec<>("Tick", Codec.INTEGER), (state, o) -> state.tick = o, state -> state.tick
-    ).add().build();
+        BlockModule.BlockStateInfo blockInfo = (BlockModule.BlockStateInfo)archetypeChunk.getComponent(index, BlockModule.BlockStateInfo.getComponentType());
+        assert blockInfo != null;
 
-    public static int getTierById(String id) {
-        return switch (id) {
-            case "Copper_Sprinkler" -> 0;
-            case "Iron_Sprinkler" -> 1;
-            case "Thorium_Sprinkler" -> 2;
-            case "Cobalt_Sprinkler" -> 3;
-            case "Adamantite_Sprinkler" -> 4;
-            case "Mithril_Sprinkler" -> 5;
-            case "Onyxium_Sprinkler" -> 6;
-            default -> 0;
-        };
-    }
+        int blockIndex = blockInfo.getIndex();
+        Ref<ChunkStore> chunkRef = blockInfo.getChunkRef();
+        WorldChunk worldChunk = (WorldChunk)commandBuffer.getComponent(chunkRef, WorldChunk.getComponentType());
+        assert worldChunk != null;
+        int localX = ChunkUtil.xFromBlockInColumn(blockIndex);
+        int localY = ChunkUtil.yFromBlockInColumn(blockIndex);
+        int localZ = ChunkUtil.zFromBlockInColumn(blockIndex);
+        int worldX = ChunkUtil.worldCoordFromLocalCoord(worldChunk.getX(), localX);
+        int worldZ = ChunkUtil.worldCoordFromLocalCoord(worldChunk.getZ(), localZ);
 
-    @Override
-    public void tick(float var1, int var2, ArchetypeChunk<ChunkStore> archetypeChunk, Store<ChunkStore> store, CommandBuffer<ChunkStore> commandBuffer) {
-        tick++;
-        if (tick % 60 != 1) return; // once every 60 ticks
-        ChunkStore entityStore = store.getExternalData();
-        World world = entityStore.getWorld();
+        World world = worldChunk.getWorld();
 
-
-        BlockType blockType = this.getBlockType();
-        if (blockType == null || blockType.getCustomModelAnimation() == null) return; // small hack to know if state is on
-
-        WorldTimeResource worldTimeResource = world.getEntityStore().getStore().getResource(WorldTimeResource.getResourceType());
-        int sprinklerTier = getTierById(blockType.getId());
         ArrayList<Vector3i> blockPositions = new ArrayList<>();
-        Vector3i blockPos = new Vector3i(this.getBlockX(), this.getBlockY()-1, this.getBlockZ());
+        Vector3i blockPos = new Vector3i(worldX, localY-1, worldZ);
+
+        int sprinklerTier = block.getTier();
         if (sprinklerTier == 0) {
             blockPositions.add(new Vector3i(blockPos.getX() - 1, blockPos.getY(), blockPos.getZ()));
             blockPositions.add(new Vector3i(blockPos.getX() + 1, blockPos.getY(), blockPos.getZ()));
@@ -73,10 +65,13 @@ public class SprinklerBlockState extends BlockState implements TickableBlockStat
             }
         }
 
+        WorldTimeResource worldTimeResource = world.getEntityStore().getStore().getResource(WorldTimeResource.getResourceType());
+
+
         for (Vector3i pos : blockPositions) {
-            WorldChunk worldChunk = world.getChunk(ChunkUtil.indexChunkFromBlock(pos.getX(), pos.getZ()));
-            assert worldChunk != null;
-            Ref<ChunkStore> tilledSoilRef = worldChunk.getBlockComponentEntity(pos.getX(), pos.getY(), pos.getZ());
+            WorldChunk chunk = world.getChunk(ChunkUtil.indexChunkFromBlock(pos.getX(), pos.getZ()));
+            assert chunk != null;
+            Ref<ChunkStore> tilledSoilRef = chunk.getBlockComponentEntity(pos.getX(), pos.getY(), pos.getZ());
 
             if (tilledSoilRef != null) {
                 Store<ChunkStore> chunkStore = world.getChunkStore().getStore();
@@ -84,8 +79,8 @@ public class SprinklerBlockState extends BlockState implements TickableBlockStat
                 if (soil != null) {
                     Instant wateredUntil = worldTimeResource.getGameTime().plus(300, ChronoUnit.SECONDS);
                     soil.setWateredUntil(wateredUntil);
-                    worldChunk.setTicking(pos.getX(), pos.getY(), pos.getZ(), true);
-                    BlockChunk blockChunk = worldChunk.getBlockChunk();
+                    chunk.setTicking(pos.getX(), pos.getY(), pos.getZ(), true);
+                    BlockChunk blockChunk = chunk.getBlockChunk();
                     if (blockChunk == null) continue;
                     BlockSection blockSection = blockChunk.getSectionAtBlockY(pos.getY());
                     if (blockSection == null) continue;
@@ -93,5 +88,10 @@ public class SprinklerBlockState extends BlockState implements TickableBlockStat
                 }
             }
         }
+    }
+
+    @Nullable
+    public Query getQuery() {
+        return Query.and(SprinklerBlock.getComponentType());
     }
 }

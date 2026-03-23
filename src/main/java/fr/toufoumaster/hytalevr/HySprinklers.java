@@ -1,33 +1,43 @@
 package fr.toufoumaster.hytalevr;
 
+import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 
-import fr.toufoumaster.hytalevr.Blocks.SprinklerBlockState;
+import fr.toufoumaster.hytalevr.Blocks.SprinklerBlock;
+import fr.toufoumaster.hytalevr.Blocks.SprinklerInitializer;
+import fr.toufoumaster.hytalevr.Blocks.SprinklerSystem;
 
 import javax.annotation.Nonnull;
 
 public class HySprinklers extends JavaPlugin {
 
-    public static HySprinklers instance;
-
+    private static HySprinklers instance;
+    private ComponentType sprinklerBlockComponentType;
 
     public HySprinklers(@Nonnull JavaPluginInit init) {
         super(init);
         instance = this;
     }
 
+    public static HySprinklers get() {
+        return instance;
+    }
+
     @Override
     protected void setup() {
         super.setup();
 
-        this.getBlockStateRegistry().registerBlockState(SprinklerBlockState.class, "Copper_Sprinkler", SprinklerBlockState.CODEC);
-        this.getBlockStateRegistry().registerBlockState(SprinklerBlockState.class, "Iron_Sprinkler", SprinklerBlockState.CODEC);
-        this.getBlockStateRegistry().registerBlockState(SprinklerBlockState.class, "Thorium_Sprinkler", SprinklerBlockState.CODEC);
-        this.getBlockStateRegistry().registerBlockState(SprinklerBlockState.class, "Cobalt_Sprinkler", SprinklerBlockState.CODEC);
-        this.getBlockStateRegistry().registerBlockState(SprinklerBlockState.class, "Adamantite_Sprinkler", SprinklerBlockState.CODEC);
-        this.getBlockStateRegistry().registerBlockState(SprinklerBlockState.class, "Mithril_Sprinkler", SprinklerBlockState.CODEC);
-        this.getBlockStateRegistry().registerBlockState(SprinklerBlockState.class, "Onyxium_Sprinkler", SprinklerBlockState.CODEC);
+        this.sprinklerBlockComponentType = this.getChunkStoreRegistry().registerComponent(SprinklerBlock.class, "SprinklerBlock", SprinklerBlock.CODEC);
     }
 
+    @Override
+    protected void start() {
+        this.getChunkStoreRegistry().registerSystem(new SprinklerSystem());
+        this.getChunkStoreRegistry().registerSystem(new SprinklerInitializer());
+    }
+
+    public ComponentType getSprinklerBlockComponentType() {
+        return this.sprinklerBlockComponentType;
+    }
 }
