@@ -68,26 +68,28 @@ public class SprinklerSystem extends EntityTickingSystem<ChunkStore> {
         WorldTimeResource worldTimeResource = world.getEntityStore().getStore().getResource(WorldTimeResource.getResourceType());
 
 
-        for (Vector3i pos : blockPositions) {
-            WorldChunk chunk = world.getChunk(ChunkUtil.indexChunkFromBlock(pos.getX(), pos.getZ()));
-            assert chunk != null;
-            Ref<ChunkStore> tilledSoilRef = chunk.getBlockComponentEntity(pos.getX(), pos.getY(), pos.getZ());
+        world.execute(() -> {
+            for (Vector3i pos : blockPositions) {
+                WorldChunk chunk = world.getChunk(ChunkUtil.indexChunkFromBlock(pos.getX(), pos.getZ()));
+                assert chunk != null;
+                Ref<ChunkStore> tilledSoilRef = chunk.getBlockComponentEntity(pos.getX(), pos.getY(), pos.getZ());
 
-            if (tilledSoilRef != null) {
-                Store<ChunkStore> chunkStore = world.getChunkStore().getStore();
-                TilledSoilBlock soil = chunkStore.getComponent(tilledSoilRef, TilledSoilBlock.getComponentType());
-                if (soil != null) {
-                    Instant wateredUntil = worldTimeResource.getGameTime().plus(300, ChronoUnit.SECONDS);
-                    soil.setWateredUntil(wateredUntil);
-                    chunk.setTicking(pos.getX(), pos.getY(), pos.getZ(), true);
-                    BlockChunk blockChunk = chunk.getBlockChunk();
-                    if (blockChunk == null) continue;
-                    BlockSection blockSection = blockChunk.getSectionAtBlockY(pos.getY());
-                    if (blockSection == null) continue;
-                    blockSection.scheduleTick(ChunkUtil.indexBlock(pos.getX(), pos.getY(), pos.getZ()), wateredUntil);
+                if (tilledSoilRef != null) {
+                    Store<ChunkStore> chunkStore = world.getChunkStore().getStore();
+                    TilledSoilBlock soil = chunkStore.getComponent(tilledSoilRef, TilledSoilBlock.getComponentType());
+                    if (soil != null) {
+                        Instant wateredUntil = worldTimeResource.getGameTime().plus(300, ChronoUnit.SECONDS);
+                        soil.setWateredUntil(wateredUntil);
+                        chunk.setTicking(pos.getX(), pos.getY(), pos.getZ(), true);
+                        BlockChunk blockChunk = chunk.getBlockChunk();
+                        if (blockChunk == null) continue;
+                        BlockSection blockSection = blockChunk.getSectionAtBlockY(pos.getY());
+                        if (blockSection == null) continue;
+                        blockSection.scheduleTick(ChunkUtil.indexBlock(pos.getX(), pos.getY(), pos.getZ()), wateredUntil);
+                    }
                 }
             }
-        }
+        });
     }
 
     @Nullable
